@@ -1,0 +1,35 @@
+const { chromium } = require('playwright');
+const path = require('path');
+(async () => {
+  const ext = path.resolve(__dirname, '../extension');
+  const ctx = await chromium.launchPersistentContext('', { headless: false, deviceScaleFactor: 2, viewport: { width: 640, height: 620 },
+    args: [`--disable-extensions-except=${ext}`, `--load-extension=${ext}`] });
+  let [sw] = ctx.serviceWorkers(); if (!sw) sw = await ctx.waitForEvent('serviceworker');
+  const id = sw.url().split('/')[2];
+  await new Promise(r => setTimeout(r, 1200));
+  const page = await ctx.newPage();
+  await page.goto('http://localhost:8765/compose.html'); await page.waitForTimeout(600);
+  await page.click('#body');
+  await page.keyboard.type('aai, aamchya gavat jatra khup chan zali. ', { delay: 25 });
+  await page.keyboard.type('mi udya ', { delay: 25 });
+  await page.keyboard.type('sandhyakali', { delay: 25 });
+  await page.waitForTimeout(400);
+  await page.screenshot({ path: '/tmp/claude-0/blog-1-typing.png' });
+  await page.keyboard.type(' ghari yeto', { delay: 25 });
+  await page.keyboard.type('.', { delay: 25 });
+  await page.keyboard.type(' mahar', { delay: 25 }); await page.waitForTimeout(400);
+  await page.screenshot({ path: '/tmp/claude-0/blog-2-complete.png' });
+  await page.keyboard.press('Escape');
+  console.log(await page.evaluate(() => document.getElementById('body').innerText));
+  const opt = await ctx.newPage();
+  await opt.setViewportSize({ width: 820, height: 900 });
+  await opt.goto(`chrome-extension://${id}/options.html`); await opt.waitForTimeout(700);
+  await opt.fill('#dict', '# My words\ngm = शुभ सकाळ!\naddr = १२, शिवाजी नगर, पुणे ४११००५\nकोल्हटकर\n');
+  await opt.click('#save'); await opt.waitForTimeout(400);
+  await opt.screenshot({ path: '/tmp/claude-0/blog-3-options.png', clip: { x: 0, y: 0, width: 820, height: 900 } });
+  const pop = await ctx.newPage();
+  await pop.setViewportSize({ width: 300, height: 400 });
+  await pop.goto(`chrome-extension://${id}/popup.html`); await pop.waitForTimeout(700);
+  await pop.screenshot({ path: '/tmp/claude-0/blog-4-popup.png' });
+  await ctx.close();
+})();

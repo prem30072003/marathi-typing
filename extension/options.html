@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marathi Typing – Settings</title>
+<style>
+  :root { --bg:#fafaf9; --card:#fff; --fg:#1c1917; --mute:#78716c; --line:#e7e5e4; --acc:#c2410c; --accbg:#fff7ed; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0c0a09; --card:#1c1917; --fg:#fafaf9; --mute:#a8a29e; --line:#44403c; --acc:#fb923c; --accbg:#292524; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
+  header { display:flex; gap:14px; align-items:center; margin-bottom: 24px; }
+  header img { width:48px; height:48px; }
+  h1 { font-size: 22px; margin: 0; } h1 small { display:block; font-weight: 400; font-size: 14px; color: var(--mute); }
+  h2 { font-size: 16px; margin: 0 0 4px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+  .welcome { background: var(--accbg); border-color: #fed7aa; display: none; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap: 16px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .row:first-of-type { border-top: 0; }
+  .row p { margin: 2px 0 0; color: var(--mute); font-size: 13px; }
+  .switch { position:relative; width:42px; height:24px; flex:none; }
+  .switch input { opacity:0; width:0; height:0; }
+  .switch span { position:absolute; inset:0; background:#d6d3d1; border-radius:24px; cursor:pointer; transition:.15s; }
+  .switch span:before { content:""; position:absolute; width:18px; height:18px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.15s; }
+  .switch input:checked + span { background:var(--acc); }
+  .switch input:checked + span:before { transform:translateX(18px); }
+  textarea { width:100%; min-height: 260px; margin-top: 10px; padding: 10px 12px; border:1px solid var(--line); border-radius: 8px;
+    background: var(--bg); color: var(--fg); font: 15px/1.6 ui-monospace, Consolas, "Nirmala UI", "Noto Sans Devanagari", monospace; resize: vertical; }
+  .bar { display:flex; flex-wrap: wrap; gap: 8px; align-items:center; margin-top: 10px; }
+  button { font: inherit; font-size: 14px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; }
+  button.primary { background: var(--acc); border-color: var(--acc); color: #fff; }
+  .status { color: var(--mute); font-size: 13px; }
+  code, kbd { font: 13px ui-monospace, Consolas, monospace; background: var(--accbg); padding: 1px 5px; border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  td { padding: 4px 8px 4px 0; vertical-align: top; }
+  .try { width:100%; margin-top:8px; padding:10px; font:18px "Nirmala UI","Noto Sans Devanagari",system-ui,sans-serif; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--fg); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icons/icon128.png" alt="">
+    <h1>मराठी टायपिंग – Settings<small>Type Marathi in English letters, get देवनागरी</small></h1>
+  </header>
+
+  <section class="card welcome" id="welcome">
+    <h2>स्वागत आहे! Welcome</h2>
+    <p>Click into any text box on any website and type Marathi the way you chat: <code>tumhi kase aahat</code> → तुम्ही कसे आहात.
+      Press <kbd>Space</kbd> to accept, <kbd>1</kbd>–<kbd>7</kbd> to pick another word, <kbd>Esc</kbd> to keep English, and <kbd>Alt</kbd>+<kbd>M</kbd> to switch on/off.
+      Try it right here:</p>
+    <input class="try" placeholder="maza naav ... ahe">
+  </section>
+
+  <section class="card">
+    <h2>Settings</h2>
+    <div class="row"><div>Marathi typing<p>Also: <kbd>Alt</kbd>+<kbd>M</kbd>, or click the म chip in a text box.</p></div>
+      <label class="switch"><input type="checkbox" id="enabled"><span></span></label></div>
+    <div class="row"><div>Keep English words in English<p>Common English words (meeting, please, office…) are typed as they are instead of in Devanagari.</p></div>
+      <label class="switch"><input type="checkbox" id="keepEnglish"><span></span></label></div>
+    <div class="row"><div>Marathi digits<p>Type <code>2026</code> → २०२६.</p></div>
+      <label class="switch"><input type="checkbox" id="digits"><span></span></label></div>
+    <div class="row"><div>Show the म / EN chip in text boxes<p>A small badge in the corner of the text box shows the current mode.</p></div>
+      <label class="switch"><input type="checkbox" id="indicator"><span></span></label></div>
+  </section>
+
+  <section class="card">
+    <h2>My dictionary</h2>
+    <p class="status">One entry per line. <code>shortcut = text</code> types the text when you type the shortcut. A Marathi word on its own line
+      (for example a name) will be found even with loose spellings. Lines starting with # are notes.</p>
+    <textarea id="dict" spellcheck="false"></textarea>
+    <div class="bar">
+      <button class="primary" id="save">Save</button>
+      <button id="import">Import .txt</button>
+      <button id="export">Export .txt</button>
+      <input type="file" id="file" accept=".txt,text/plain" hidden>
+      <span class="status" id="dictStatus"></span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>What it has learned</h2>
+    <p class="status" id="stats">…</p>
+    <div class="bar"><button id="forget">Forget learned words</button></div>
+  </section>
+
+  <section class="card">
+    <h2>Tips</h2>
+    <table>
+      <tr><td><code>paaNi</code>, <code>baL</code>, <code>ghaDyal</code></td><td>Capital T D N L ask for ट ड ण ळ → पाणी, बाळ, घड्याळ</td></tr>
+      <tr><td><code>dnyan</code>, <code>ksh</code>/<code>x</code></td><td>ज्ञान, क्ष</td></tr>
+      <tr><td><code>mla</code>, <code>mnje</code>, <code>nhi</code>, <code>pn</code></td><td>Chat short forms work: मला, म्हणजे, नाही, पण</td></tr>
+      <tr><td><code>mahar</code> …</td><td>Longer words appear at the bottom of the list marked … (महाराष्ट्र)</td></tr>
+      <tr><td>Pick 2–7 once</td><td>It remembers your choice and the word you usually type next.</td></tr>
+    </table>
+  </section>
+</main>
+<script src="engine.js"></script>
+<script src="content.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

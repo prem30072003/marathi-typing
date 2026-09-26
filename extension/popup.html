@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --bg:#fff; --fg:#1c1917; --mute:#78716c; --line:#e7e5e4; --acc:#c2410c; --accbg:#fff7ed; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1c1917; --fg:#fafaf9; --mute:#a8a29e; --line:#44403c; --acc:#fb923c; --accbg:#292524; } }
+  * { box-sizing: border-box; }
+  body { margin:0; width:300px; background:var(--bg); color:var(--fg); font:13px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  header { display:flex; align-items:center; gap:10px; padding:14px 16px 10px; }
+  header img { width:32px; height:32px; }
+  h1 { font-size:15px; margin:0; } h1 small { display:block; font-weight:400; color:var(--mute); font-size:12px; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 16px; border-top:1px solid var(--line); }
+  .switch { position:relative; width:40px; height:22px; flex:none; }
+  .switch input { opacity:0; width:0; height:0; }
+  .switch span { position:absolute; inset:0; background:#d6d3d1; border-radius:22px; cursor:pointer; transition:.15s; }
+  .switch span:before { content:""; position:absolute; width:16px; height:16px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.15s; }
+  .switch input:checked + span { background:var(--acc); }
+  .switch input:checked + span:before { transform:translateX(18px); }
+  .try { margin:0 16px 12px; padding:10px; border-radius:8px; background:var(--accbg); }
+  .try textarea { width:100%; box-sizing:border-box; height:56px; border:1px solid var(--line); border-radius:6px; padding:6px;
+    font:16px "Nirmala UI","Kohinoor Devanagari","Noto Sans Devanagari",system-ui,sans-serif; background:var(--bg); color:var(--fg); resize:none; }
+  .keys { color:var(--mute); font-size:12px; margin:0; padding:0 16px 12px; }
+  kbd { font:11px ui-monospace,Consolas,monospace; border:1px solid var(--line); border-radius:4px; padding:0 4px; }
+  button.link { background:none; border:0; color:var(--acc); cursor:pointer; padding:0; font:inherit; }
+  .muted { color:var(--mute); font-size:12px; }
+</style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon48.png" alt="">
+    <h1>मराठी टायपिंग<small>Marathi typing</small></h1>
+  </header>
+  <div class="row"><span>Marathi typing <span class="muted">(<kbd>Alt</kbd>+<kbd>M</kbd>)</span></span>
+    <label class="switch"><input type="checkbox" id="on"><span></span></label></div>
+  <div class="row"><span>On this site <span class="muted" id="host"></span></span>
+    <label class="switch"><input type="checkbox" id="site"><span></span></label></div>
+  <div class="try"><textarea id="try" placeholder="Try it: tumhi kase aahat"></textarea></div>
+  <p class="keys"><kbd>Space</kbd> accept · <kbd>1</kbd>–<kbd>7</kbd> pick · <kbd>↑</kbd><kbd>↓</kbd> move · <kbd>Esc</kbd> keep English<br>
+    Capitals for ट ड ण ळ ष: <kbd>T</kbd> <kbd>D</kbd> <kbd>N</kbd> <kbd>L</kbd> <kbd>Sh</kbd></p>
+  <div class="row"><span class="muted" id="stats">…</span><button class="link" id="settings">Settings &amp; my dictionary</button></div>
+  <script src="engine.js"></script>
+  <script src="content.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

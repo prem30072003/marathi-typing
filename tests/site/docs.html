@@ -1,0 +1,13 @@
+<!doctype html><meta charset="utf-8"><title>docs-like</title>
+<div id="docsout" style="border:1px dashed #c00;min-height:30px"></div>
+<div class="kix-cursor"><div class="kix-cursor-caret" style="position:absolute;left:120px;top:60px;width:2px;height:20px;background:#000"></div></div>
+<script>
+setTimeout(() => {
+  const f = document.createElement('iframe'); f.className = 'docs-texteventtarget-iframe'; f.style.cssText='position:absolute;top:-10000px';
+  document.body.appendChild(f);
+  const d = f.contentDocument; d.body.contentEditable = 'true';
+  d.body.addEventListener('paste', e => { e.preventDefault(); document.getElementById('docsout').textContent += e.clipboardData.getData('text/plain'); });
+  d.addEventListener('keydown', e => { if (e.key.length === 1) window.leaked = (window.leaked || '') + e.key; });
+  d.body.focus();
+}, 300);
+</script>
